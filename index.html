@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Favorite Movie Genres</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+  </head>
+
+  <body>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">Look For Movie gifs By Genre!</h1>
+        <form id="movie-form">
+          <label for="movie-input">Enter a movie genre</label>
+          <input type="text" id="movie-input">
+                  
+          <!-- Button triggers new movie genre to be added -->
+          <input id="add-genre" type="submit" value="then click here to add a button!">
+        </form>
+      </div>
+                  
+      <div class="panel-body">
+        <!-- Rendered Buttons will get Dumped Here  -->
+        <div id="buttons-view"></div>
+      </div>
+
+      <div class="container">
+      
+        <!-- Movies will Get Dumped Dere -->
+        <div id="movies-view"></div>
+      </div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="assets/javascript/app.js"></script>
+    
+  </body>
+</html>
