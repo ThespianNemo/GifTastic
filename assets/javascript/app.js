@@ -1,50 +1,62 @@
 // Initial array of movie genres
   var topics = ["Comedy", "Drama"];
 
-  // displayMovieInfo function re-renders the HTML to display the appropriate content
+  // Re-renders the HTML to display the appropriate content
   function displayMovieInfo() {
 
     var topic = $(this).attr("data-name");
-    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=fFo32gLgYRAYGhpS0IAfdnoaH1NrIxYX&q="+topic +" movie&limit=10&offset=0&rating=PG-13&lang=en";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=fFo32gLgYRAYGhpS0IAfdnoaH1NrIxYX&q="+topic +" film&limit=10&offset=0&rating=PG-13&lang=en";
    
     // Creating an AJAX call for the specific movie genre button being clicked
     $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function(response) {
+
 console.log(response);
-        for (var i = 0; i < response.data.length; i++) {
+    //Clear the previous gifs  
+    $(".movies-view").empty();
+
+    for (var i = 0; i < response.data.length; i++) {
 
       // Creating a div to hold the movie
-     
-                var movieDiv = $("<div class='movie'>");       
+      var movieDiv = $("<div class='movie'>");       
                                     
       // Storing the rating data
-                var rating = response.data[i].rating;
+      var rating = response.data[i].rating;
             
       // Creating an element to have the rating displayed
-                var pRating = $("<p>").text("Rating: " + rating);
+      var pRating = $("<p>").text("Rating: " + rating);
 
       // Displaying the rating
-                movieDiv.append(pRating);
+      movieDiv.append(pRating);
 
-      // Retrieving the URL for the image
-                var imgURL = response.data[i].images.fixed_width_still.url;
+      // Retrieving the URLs for the image
+      var imgStillURL = response.data[i].images.fixed_height_still.url;
+      var imgAnimateURL = response.data[i].images.fixed_height.url;
 
       // Creating an element to hold the image
-                var image = $("<img>").attr("src", imgURL);
+      //<img src="https://media0.giphy.com/media/l3nWdq3wzhQBY2ili/giphy.gif_s.gif" data-still="https://media0.giphy.com/media/l3nWdq3wzhQBY2ili/giphy.gif_s.gif" data-animate="https://media0.giphy.com/media/l3nWdq3wzhQBY2ili/giphy.gif" data-state="still" class="gif">
+
+      var image = $("<img>").attr("src", imgStillURL);
+
+      image.attr("data-state","still")
+      image.attr("data-animate",imgAnimateURL); 
+      image.attr("data-still",imgStillURL);
+      image.addClass("gif");
 
       // Appending the image
-                movieDiv.append(image);
+      movieDiv.append(image);
 
       // Putting the entire movie above the previous movies
-                $("#movies-view").prepend(movieDiv);
-            }
+          
+      $(".movies-view").prepend(movieDiv);
+    }
         //}
-    });
-  }
+  });
+}
 
-  // Function for displaying movie data
+  // Function for creating movie genre buttons
   function renderButtons() {
 
     // Deleting the genres prior to adding new genres
@@ -68,14 +80,18 @@ console.log(response);
 
   // This function handles events where a movie button is clicked
   $("#add-genre").on("click", function(event) {
+
+    //Don't refresh the page
     event.preventDefault();
+
     // This line grabs the input from the textbox
     var topicInput = $("#movie-input").val().trim();
 
-    // Adding movie from the textbox to our array
+    // Adding movie genre from the textbox to the array
     topics.push(topicInput);
-
-    // Calling renderButtons which handles the processing of our movie array
+    $("movie-input").val("");
+    
+    // Calling renderButtons which will handle the processing of our new movie genre buttons
     renderButtons();
   });
 
@@ -84,3 +100,21 @@ console.log(response);
 
   // Calling the renderButtons function to display the intial buttons
   renderButtons();
+
+  $(document).on("click", ".gif", function() {
+
+    var state = $(this).attr("data-state");
+
+    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+    // Then, set the image's data-state to animate
+    
+    if (state === "still") {
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+
+      // Else set src to the data-still value
+    } else {
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    }
+  });
