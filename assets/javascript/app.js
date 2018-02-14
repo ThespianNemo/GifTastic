@@ -1,10 +1,14 @@
 // Initial array of movie genres
   var topics = ["Comedy", "Drama"];
 
+//--------------------------------------FUNCTION TO RETRIEVE MOVIE INFO WITH API/AJAX AND FORMATTING INFO FOR BROWSER------------------------------
+
   // Re-renders the HTML to display the appropriate content
   function displayMovieInfo() {
 
+    //data-name is the film genre entered by the user
     var topic = $(this).attr("data-name");
+
     var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=fFo32gLgYRAYGhpS0IAfdnoaH1NrIxYX&q="+topic +" film&limit=10&offset=0&rating=PG-13&lang=en";
    
     // Creating an AJAX call for the specific movie genre button being clicked
@@ -13,7 +17,6 @@
       method: "GET"
     }).then(function(response) {
 
-console.log(response);
     //Clear the previous gifs  
     $(".movies-view").empty();
 
@@ -48,15 +51,16 @@ console.log(response);
       // Appending the image
       movieDiv.append(image);
 
-      // Putting the entire movie above the previous movies
+      // Displaying the movie and rating to the browswer
           
       $(".movies-view").prepend(movieDiv);
     }
-        //}
   });
 }
 
-  // Function for creating movie genre buttons
+//---------------------------------------------------------------------------------------------------------
+
+//---------------------FUNCTION TO CREATE MOVIE GENRE BUTTONS----------------------------------------------
   function renderButtons() {
 
     // Deleting the genres prior to adding new genres
@@ -78,7 +82,7 @@ console.log(response);
     }
   }
 
-  // This function handles events where a movie button is clicked
+//---------------------FUNCTION TO HANDLE WHEN THE ADD GENRE BUTTON IS CLICKED-----------------------------------
   $("#add-genre").on("click", function(event) {
 
     //Don't refresh the page
@@ -89,17 +93,21 @@ console.log(response);
 
     // Adding movie genre from the textbox to the array
     topics.push(topicInput);
-    $("movie-input").val("");
+    $("#movie-input").val("");
     
     // Calling renderButtons which will handle the processing of our new movie genre buttons
     renderButtons();
   });
+
+//--------------------------------------------------------------------------------------------------------------
 
   // Adding a click event listener to all elements with a class of "genre-btn"
   $(document).on("click", ".genre-btn", displayMovieInfo);
 
   // Calling the renderButtons function to display the intial buttons
   renderButtons();
+
+  //---------------------FUNCTION TO ANIMATE/DEANIMATE GIFS WHEN CLICKED-----------------------------------
 
   $(document).on("click", ".gif", function() {
 
